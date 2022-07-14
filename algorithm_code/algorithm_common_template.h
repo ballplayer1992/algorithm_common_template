@@ -5,6 +5,7 @@ using namespace std;
 
 namespace k_m_p_interface //kmp匹配算法
 {
+    //https://blog.csdn.net/yutong5818/article/details/81319120
     /// <summary>
     /// 计算 next 数组
     /// </summary>
