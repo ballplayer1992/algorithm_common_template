@@ -1,0 +1,1 @@
+# algorithm_common_template
