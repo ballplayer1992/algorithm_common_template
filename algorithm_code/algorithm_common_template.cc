@@ -35,3 +35,24 @@ namespace k_m_p_interface
         return -1;
     }
 }
+
+namespace monotonic_stack_interface //单调栈
+{
+    int MonotonicArr(stack<mono_pair>& stack_data, int index, const mono_array& arr_data, OnProcessOtherThing on_data, bool is_desc)
+    {
+        int pos = index;
+        while (!stack_data.empty())
+        {
+            mono_data current_data = stack_data.top().second;
+            bool meet_condition = is_desc ? arr_data[index] >= current_data : arr_data[index] <= current_data;
+
+            if (!meet_condition || (meet_condition && !on_data(stack_data.top()))) //不满足排序要求 或者 满足排序要求但事务处理后返回false
+                break;
+
+            pos = stack_data.top().first;
+            stack_data.pop();
+        }
+        stack_data.push({ pos,arr_data[index] });
+        return pos;
+    }
+}
