@@ -27,7 +27,8 @@ namespace monotonic_stack_interface //单调栈
     using mono_array = vector<mono_data>;
     using mono_pair = pair<int, mono_data>; //索引(用于记录区间)，数组值
     using OnProcessOtherThing = std::function<bool(const mono_pair& m_p)>;
-
+    using mono_stack = stack<mono_pair>;
+    using mono_vector = vector<mono_pair>;
     /// <summary>
     /// 单调栈通用函数
     /// </summary>

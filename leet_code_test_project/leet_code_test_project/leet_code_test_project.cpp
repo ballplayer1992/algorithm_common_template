@@ -13,52 +13,56 @@ using namespace std;
 class Solution {
 public:
 
-    int validSubarraySize(vector<int>& nums, int threshold) {
-  
-        stack<monotonic_stack_interface::mono_pair> stack_data;
-        //pair,第一个int表示当前值对应的最小区间，第二个int表示当前值
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        vector<int> nums_temp = nums;
+        nums_temp.insert(nums_temp.end(),nums.begin(),nums.end());
 
-        for (int i = 0,pos = 0; i < nums.size(); i++)
+        vector<int> answer(nums.size(),-1);
+
+        monotonic_stack_interface::mono_stack stack_data;
+
+        for (int i = 0; i < nums_temp.size(); i++)
         {
-            if (nums[i] > threshold)
-                return 1;
-
-            int value = -1;
-            monotonic_stack_interface::MonotonicArr(stack_data, i, nums,[&](const monotonic_stack_interface::mono_pair& m_p) {
-
-                if (threshold / (i - m_p.first) < m_p.second)
-                {
-                    value = i - m_p.first;
-                    return false;
-                }
-                return true;
-            },false);
-            
-            if (value != -1)
-                return value;
+            while (!stack_data.empty() && nums_temp[i] > stack_data.top().second)
+            {
+                answer[stack_data.top().first % nums.size()] = nums_temp[i];
+                stack_data.pop();
+            }
+            stack_data.push({i,nums_temp[i]});
         }
-
-        int pos = nums.size();
-        while (!stack_data.empty())
-        {
-            int aver = threshold / (pos - stack_data.top().first);
-            if (stack_data.top().second > aver)
-                return pos - stack_data.top().first;
-            stack_data.pop();
-        }
-
-        return -1;
-
+        return answer;
     }
+
+    int maxWidthRamp(vector<int>& nums) {
+
+        monotonic_stack_interface::mono_vector stack_data;
+        stack_data.push_back({ 0,nums[0] });
+
+        int max_width = 0,index = 0;
+
+        for (int i = 1; i < nums.size(); i++)
+        {
+            index = stack_data.size() - 1;
+            if (nums[i] < stack_data[index].second)
+                stack_data.push_back({ i,nums[i] });
+            else
+            while (index >= 0 && nums[i] >= stack_data[index].second)
+            {
+                max_width = max(max_width,i - stack_data[index].first);
+                index--;
+            }
+        }
+        return max_width;
+    }
+
 };
 
 int main() {
 
-    vector<int> nums = { 6,5,6,5,8 };
+    vector<int> nums = { 6,0,8,2,1,5 };
     int threshold = 7;
 
     Solution solution;
-   int value =  solution.validSubarraySize(nums, threshold);
-
+    solution.maxWidthRamp(nums);
     return 0;
 }
