@@ -40,3 +40,39 @@ namespace monotonic_stack_interface //单调栈
     int MonotonicArr(stack<mono_pair>& stack_data,
         int index, const mono_array& arr_data, OnProcessOtherThing on_data, bool is_desc);
 }
+
+namespace math_interface
+{
+    /// <summary>
+    /// 求 a 和 b 的最大公约数
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>返回最大公约数</returns>
+    template<class T>
+    T gcd(T a,T b)
+    {
+        T r;
+        while (a)
+        {
+            r = b % a;
+            b = a;
+            a = r;
+        }
+        return b;
+    }
+
+    /// <summary>
+    /// 求 a 和 b 的最小公倍数
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>返回最新公倍数</returns>
+    template<class T>
+    T lcm(T a, T b)
+    {
+        return a * b / (gcd(a,b));
+    }
+}

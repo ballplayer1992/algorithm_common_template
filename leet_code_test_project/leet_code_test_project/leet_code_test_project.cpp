@@ -13,56 +13,28 @@ using namespace std;
 class Solution {
 public:
 
-    vector<int> nextGreaterElements(vector<int>& nums) {
-        vector<int> nums_temp = nums;
-        nums_temp.insert(nums_temp.end(),nums.begin(),nums.end());
+    int minOperations(vector<int>& nums, vector<int>& numsDivide) {
 
-        vector<int> answer(nums.size(),-1);
+        int max_gcd = numsDivide[0];
+        for (auto& v : numsDivide)
+            max_gcd = math_interface::gcd<int>(max_gcd,v);
 
-        monotonic_stack_interface::mono_stack stack_data;
+        sort(nums.begin(),nums.end());
 
-        for (int i = 0; i < nums_temp.size(); i++)
+        for (int a = 0; a < nums.size(); a++)
         {
-            while (!stack_data.empty() && nums_temp[i] > stack_data.top().second)
-            {
-                answer[stack_data.top().first % nums.size()] = nums_temp[i];
-                stack_data.pop();
-            }
-            stack_data.push({i,nums_temp[i]});
+            if (max_gcd % nums[a] == 0)
+                return a;
+
+            if (nums[a] > max_gcd)
+                return -1;
         }
-        return answer;
+        return -1;
     }
-
-    int maxWidthRamp(vector<int>& nums) {
-
-        monotonic_stack_interface::mono_vector stack_data;
-        stack_data.push_back({ 0,nums[0] });
-
-        int max_width = 0,index = 0;
-
-        for (int i = 1; i < nums.size(); i++)
-        {
-            index = stack_data.size() - 1;
-            if (nums[i] < stack_data[index].second)
-                stack_data.push_back({ i,nums[i] });
-            else
-            while (index >= 0 && nums[i] >= stack_data[index].second)
-            {
-                max_width = max(max_width,i - stack_data[index].first);
-                index--;
-            }
-        }
-        return max_width;
-    }
-
 };
 
 int main() {
 
-    vector<int> nums = { 6,0,8,2,1,5 };
-    int threshold = 7;
-
     Solution solution;
-    solution.maxWidthRamp(nums);
     return 0;
 }
