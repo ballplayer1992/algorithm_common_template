@@ -23,22 +23,20 @@ namespace k_m_p_interface //kmp匹配算法
 
 namespace monotonic_stack_interface //单调栈
 {
-    using mono_data = int;
+    struct data
+    {
+        int value = 0; //数组下标对应的值
+        int back_data = 0;//存储当前变量的可用的历史变化数据
+        data() {}
+        data(int v, int c_d) { value = v; back_data = c_d; }
+    };
+
+    using mono_data = struct data;
     using mono_array = vector<mono_data>;
     using mono_pair = pair<int, mono_data>; //索引(用于记录区间)，数组值
     using OnProcessOtherThing = std::function<bool(const mono_pair& m_p)>;
     using mono_stack = stack<mono_pair>;
     using mono_vector = vector<mono_pair>;
-    /// <summary>
-    /// 单调栈通用函数
-    /// </summary>
-    /// <param name="stack_data">栈对象</param>
-    /// <param name="index">传入要压栈的mono_array对应的索引值</param>
-    /// <param name="arr_data">mono_array对象</param>
-    /// <param name="is_desc">true:降序，false:升序</param>
-    /// <returns></returns>
-    int MonotonicArr(stack<mono_pair>& stack_data,
-        int index, const mono_array& arr_data, OnProcessOtherThing on_data, bool is_desc);
 }
 
 namespace math_interface
@@ -51,7 +49,7 @@ namespace math_interface
     /// <param name="b"></param>
     /// <returns>返回最大公约数</returns>
     template<class T>
-    T gcd(T a,T b)
+    T gcd(T a, T b)
     {
         T r;
         while (a)
@@ -73,6 +71,6 @@ namespace math_interface
     template<class T>
     T lcm(T a, T b)
     {
-        return a * b / (gcd(a,b));
+        return a * b / (gcd(a, b));
     }
 }

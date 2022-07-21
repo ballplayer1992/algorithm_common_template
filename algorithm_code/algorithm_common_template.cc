@@ -38,21 +38,32 @@ namespace k_m_p_interface
 
 namespace monotonic_stack_interface //单调栈
 {
-    int MonotonicArr(stack<mono_pair>& stack_data, int index, const mono_array& arr_data, OnProcessOtherThing on_data, bool is_desc)
-    {
-        int pos = index;
-        while (!stack_data.empty())
-        {
-            mono_data current_data = stack_data.top().second;
-            bool meet_condition = is_desc ? arr_data[index] >= current_data : arr_data[index] <= current_data;
+    /// <summary>
+/// 单调栈通用函数
+/// </summary>
+/// <param name="stack_data">栈对象</param>
+/// <param name="index">传入要压栈的mono_array对应的索引值</param>
+/// <param name="arr_data">mono_array对象</param>
+/// <param name="is_desc">true:降序，false:升序</param>
+/// <returns></returns>
+    int MonotonicArr(stack<mono_pair>& stack_data,
+        int index, const mono_array& arr_data, OnProcessOtherThing on_data, bool is_desc);
 
-            if (!meet_condition || (meet_condition && !on_data(stack_data.top()))) //不满足排序要求 或者 满足排序要求但事务处理后返回false
-                break;
+    //int MonotonicArr(stack<mono_pair>& stack_data, int index, const mono_array& arr_data, OnProcessOtherThing on_data, bool is_desc)
+    //{
+    //    int pos = index;
+    //    while (!stack_data.empty())
+    //    {
+    //        mono_data current_data = stack_data.top().second;
+    //        bool meet_condition = is_desc ? arr_data[index] >= current_data : arr_data[index] <= current_data;
 
-            pos = stack_data.top().first;
-            stack_data.pop();
-        }
-        stack_data.push({ pos,arr_data[index] });
-        return pos;
-    }
+    //        if (!meet_condition || (meet_condition && !on_data(stack_data.top()))) //不满足排序要求 或者 满足排序要求但事务处理后返回false
+    //            break;
+
+    //        pos = stack_data.top().first;
+    //        stack_data.pop();
+    //    }
+    //    stack_data.push({ pos,arr_data[index] });
+    //    return pos;
+    //}
 }

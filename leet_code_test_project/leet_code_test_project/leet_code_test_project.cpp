@@ -12,29 +12,39 @@ using namespace std;
 
 class Solution {
 public:
-
-    int minOperations(vector<int>& nums, vector<int>& numsDivide) {
-
-        int max_gcd = numsDivide[0];
-        for (auto& v : numsDivide)
-            max_gcd = math_interface::gcd<int>(max_gcd,v);
-
-        sort(nums.begin(),nums.end());
-
-        for (int a = 0; a < nums.size(); a++)
+    int largestRectangleArea(vector<int>& heights) {
+        monotonic_stack_interface::mono_stack stack_data;
+        int max_area = 0;
+        for (int a = 0; a < heights.size(); a++)
         {
-            if (max_gcd % nums[a] == 0)
-                return a;
-
-            if (nums[a] > max_gcd)
-                return -1;
+            int count_eat_index = 0;
+            while (!stack_data.empty() && heights[a] < stack_data.top().second.value)
+            {
+                int current_area = (a - stack_data.top().first + stack_data.top().second.back_data) * stack_data.top().second.value;
+                current_area = max(current_area, heights[a] * ((a - stack_data.top().first) + 1));
+                if (current_area > max_area)
+                    max_area = current_area;
+                count_eat_index = (a - stack_data.top().first) + stack_data.top().second.back_data;
+                stack_data.pop();
+            }
+            stack_data.push({ a,{heights[a],count_eat_index} });
         }
-        return -1;
+        int index = stack_data.top().first + 1;
+        while (!stack_data.empty())
+        {
+            int current_area = (index - stack_data.top().first + stack_data.top().second.back_data) * stack_data.top().second.value;
+            if (current_area > max_area)
+                max_area = current_area;
+            stack_data.pop();
+        }
+        return max_area;
     }
 };
 
 int main() {
 
+    vector<int> height_arr = { 4,2,3 };
     Solution solution;
+    solution.largestRectangleArea(height_arr);
     return 0;
 }
