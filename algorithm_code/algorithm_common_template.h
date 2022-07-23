@@ -1,39 +1,39 @@
-#pragma once
+ï»¿#pragma once
 #include<vector>
 #include<string>
 #include<stack>
 #include<functional>
 using namespace std;
 
-namespace k_m_p_interface //kmpÆ¥ÅäËã·¨
+namespace k_m_p_interface //kmpåŒ¹é…ç®—æ³•
 {
     //https://blog.csdn.net/yutong5818/article/details/81319120
     /// <summary>
-    /// ¼ÆËã next Êı×é
+    /// è®¡ç®— next æ•°ç»„
     /// </summary>
     void MakeNext(const string& char_arr, vector<int>& next_arr);
 
     /// <summary>
-    /// kmpËã·¨¼ÆËãÆ¥ÅäµÄ×Ó¼¯£¬·µ»ØËùÔÚt_arr Êı×éµÄË÷ÒıÖµ
+    /// kmpç®—æ³•è®¡ç®—åŒ¹é…çš„å­é›†ï¼Œè¿”å›æ‰€åœ¨t_arr æ•°ç»„çš„ç´¢å¼•å€¼
     /// </summary>
     /// <returns></returns>
     int KMPMatchSubSet(const string& t_arr, const string& s_arr);
 
 }
 
-namespace monotonic_stack_interface //µ¥µ÷Õ»
+namespace monotonic_stack_interface //å•è°ƒæ ˆ
 {
     struct data
     {
-        int value = 0; //Êı×éÏÂ±ê¶ÔÓ¦µÄÖµ
-        int back_data = 0;//´æ´¢µ±Ç°±äÁ¿µÄ¿ÉÓÃµÄÀúÊ·±ä»¯Êı¾İ
+        int value = 0; //æ•°ç»„ä¸‹æ ‡å¯¹åº”çš„å€¼
+        int back_data = 0;//å­˜å‚¨å½“å‰å˜é‡çš„å¯ç”¨çš„å†å²å˜åŒ–æ•°æ®
         data() {}
         data(int v, int c_d) { value = v; back_data = c_d; }
     };
 
     using mono_data = struct data;
     using mono_array = vector<mono_data>;
-    using mono_pair = pair<int, mono_data>; //Ë÷Òı(ÓÃÓÚ¼ÇÂ¼Çø¼ä)£¬Êı×éÖµ
+    using mono_pair = pair<int, mono_data>; //ç´¢å¼•(ç”¨äºè®°å½•åŒºé—´)ï¼Œæ•°ç»„å€¼
     using OnProcessOtherThing = std::function<bool(const mono_pair& m_p)>;
     using mono_stack = stack<mono_pair>;
     using mono_vector = vector<mono_pair>;
@@ -42,12 +42,12 @@ namespace monotonic_stack_interface //µ¥µ÷Õ»
 namespace math_interface
 {
     /// <summary>
-    /// Çó a ºÍ b µÄ×î´ó¹«Ô¼Êı
+    /// æ±‚ a å’Œ b çš„æœ€å¤§å…¬çº¦æ•°
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="a"></param>
     /// <param name="b"></param>
-    /// <returns>·µ»Ø×î´ó¹«Ô¼Êı</returns>
+    /// <returns>è¿”å›æœ€å¤§å…¬çº¦æ•°</returns>
     template<class T>
     T gcd(T a, T b)
     {
@@ -62,12 +62,12 @@ namespace math_interface
     }
 
     /// <summary>
-    /// Çó a ºÍ b µÄ×îĞ¡¹«±¶Êı
+    /// æ±‚ a å’Œ b çš„æœ€å°å…¬å€æ•°
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="a"></param>
     /// <param name="b"></param>
-    /// <returns>·µ»Ø×îĞÂ¹«±¶Êı</returns>
+    /// <returns>è¿”å›æœ€æ–°å…¬å€æ•°</returns>
     template<class T>
     T lcm(T a, T b)
     {
