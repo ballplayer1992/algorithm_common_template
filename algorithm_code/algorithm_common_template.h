@@ -1,9 +1,18 @@
 #pragma once
+#include<fstream>
 #include<vector>
 #include<string>
 #include<stack>
 #include<functional>
 using namespace std;
+
+namespace help_interface {
+
+    void ReadTextFile(const string& str_path, string& str_data);
+    void StringDataToArrayData(const string& str_data, vector<int>& nums);
+}
+
+
 
 namespace k_m_p_interface //kmp∆•≈‰À„∑®
 {

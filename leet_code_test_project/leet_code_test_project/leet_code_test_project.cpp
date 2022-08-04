@@ -1,10 +1,12 @@
 ﻿#include<string>
 #include<map>
+#include<unordered_map>
 #include<algorithm>
 #include<assert.h>
 #include<iostream>
 #include<vector>
 #include<stack>
+#include<set>
 using namespace std;
 
 //引用自己的算法库
@@ -12,39 +14,68 @@ using namespace std;
 
 class Solution {
 public:
-    int largestRectangleArea(vector<int>& heights) {
-        monotonic_stack_interface::mono_stack stack_data;
-        int max_area = 0;
-        for (int a = 0; a < heights.size(); a++)
-        {
-            int count_eat_index = 0;
-            while (!stack_data.empty() && heights[a] < stack_data.top().second.value)
-            {
-                int current_area = (a - stack_data.top().first + stack_data.top().second.back_data) * stack_data.top().second.value;
-                current_area = max(current_area, heights[a] * ((a - stack_data.top().first) + 1));
-                if (current_area > max_area)
-                    max_area = current_area;
-                count_eat_index = (a - stack_data.top().first) + stack_data.top().second.back_data;
-                stack_data.pop();
+    int longestCycle(vector<int>& edges) {
+        vector<int> node_in_array(edges.size(), 0);
+        vector<bool> visit_flag(edges.size(), false);
+
+        for (int i = 0; i < edges.size(); i++)
+            if (edges[i] != -1)
+                node_in_array[edges[i]]++; //记录入边数量
+
+        vector<int> no_in_edge_node;
+        for (int i = 0; i < node_in_array.size(); i++)
+            if (node_in_array[i] == 0)
+                no_in_edge_node.push_back(i);
+
+        //拆除所有没有入边的节点
+        int count = 0;
+        while (!no_in_edge_node.empty()) {
+            int index = no_in_edge_node.back();
+            no_in_edge_node.pop_back();
+            if (index != -1 && node_in_array[index] >= 0 && --node_in_array[index] <= 0) {
+                no_in_edge_node.push_back(edges[index]);
+                visit_flag[index] = true;
+                count++;
             }
-            stack_data.push({ a,{heights[a],count_eat_index} });
         }
-        int index = stack_data.top().first + 1;
-        while (!stack_data.empty())
-        {
-            int current_area = (index - stack_data.top().first + stack_data.top().second.back_data) * stack_data.top().second.value;
-            if (current_area > max_area)
-                max_area = current_area;
-            stack_data.pop();
+
+        if (count == edges.size())
+            return -1;
+
+        int ans = 0;
+
+        for (int i = 0; i < node_in_array.size(); i++) {
+            if (visit_flag[i])
+                continue;
+            vector<int> index_queue(1, i);
+            int layer = 0;
+            while (!index_queue.empty()) {
+                int index = index_queue[0];
+                index_queue.erase(index_queue.begin());
+                if (index == i && layer != 0)
+                    break;
+
+                layer++;
+                visit_flag[index] = true;
+                index_queue.push_back(edges[index]);
+            }
+            ans = max(ans, layer);
         }
-        return max_area;
+        return ans;
     }
 };
 
 int main() {
 
-    vector<int> height_arr = { 4,2,3 };
+    string test_path = "data_example//example.txt";
+    string data;
+    help_interface::ReadTextFile(test_path, data);
+
+    vector<int> nums1;
+
+    help_interface::StringDataToArrayData(data, nums1);
+
     Solution solution;
-    solution.largestRectangleArea(height_arr);
+    solution.longestCycle(nums1);
     return 0;
 }

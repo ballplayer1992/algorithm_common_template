@@ -1,4 +1,34 @@
 #include "algorithm_common_template.h"
+namespace help_interface {
+    void ReadTextFile(const std::string& str_path, std::string& str_data)
+    {
+        std::ifstream inData(str_path, std::ios::binary);
+        std::getline(inData, str_data, (char)EOF);
+        inData.close();
+    }
+
+    void StringDataToArrayData(const string& str_data, vector<int>& nums) {
+
+        string temp = str_data;
+        temp.replace(temp.find('['), 1, "");
+        temp.replace(temp.find(']'), 1, "");
+
+        string current_number;
+        for (int i = 0; i < temp.size(); i++) {
+            if (temp[i] != ',') {
+                current_number.push_back(temp[i]);
+                if (i == temp.size() - 1)
+                    nums.push_back(atol(current_number.c_str()));
+            }
+            else {
+                nums.push_back(atol(current_number.c_str()));
+                current_number = "";
+            }
+        }
+    }
+}
+
+
 
 namespace k_m_p_interface
 {
