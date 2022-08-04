@@ -1,4 +1,4 @@
-#include "algorithm_common_template.h"
+ï»¿#include "algorithm_common_template.h"
 namespace help_interface {
     void ReadTextFile(const std::string& str_path, std::string& str_data)
     {
@@ -66,15 +66,15 @@ namespace k_m_p_interface
     }
 }
 
-namespace monotonic_stack_interface //µ¥µ÷Õ»
+namespace monotonic_stack_interface //å•è°ƒæ ˆ
 {
     /// <summary>
-/// µ¥µ÷Õ»Í¨ÓÃº¯Êı
+/// å•è°ƒæ ˆé€šç”¨å‡½æ•°
 /// </summary>
-/// <param name="stack_data">Õ»¶ÔÏó</param>
-/// <param name="index">´«ÈëÒªÑ¹Õ»µÄmono_array¶ÔÓ¦µÄË÷ÒıÖµ</param>
-/// <param name="arr_data">mono_array¶ÔÏó</param>
-/// <param name="is_desc">true:½µĞò£¬false:ÉıĞò</param>
+/// <param name="stack_data">æ ˆå¯¹è±¡</param>
+/// <param name="index">ä¼ å…¥è¦å‹æ ˆçš„mono_arrayå¯¹åº”çš„ç´¢å¼•å€¼</param>
+/// <param name="arr_data">mono_arrayå¯¹è±¡</param>
+/// <param name="is_desc">true:é™åºï¼Œfalse:å‡åº</param>
 /// <returns></returns>
     int MonotonicArr(stack<mono_pair>& stack_data,
         int index, const mono_array& arr_data, OnProcessOtherThing on_data, bool is_desc);
@@ -87,7 +87,7 @@ namespace monotonic_stack_interface //µ¥µ÷Õ»
     //        mono_data current_data = stack_data.top().second;
     //        bool meet_condition = is_desc ? arr_data[index] >= current_data : arr_data[index] <= current_data;
 
-    //        if (!meet_condition || (meet_condition && !on_data(stack_data.top()))) //²»Âú×ãÅÅĞòÒªÇó »òÕß Âú×ãÅÅĞòÒªÇóµ«ÊÂÎñ´¦Àíºó·µ»Øfalse
+    //        if (!meet_condition || (meet_condition && !on_data(stack_data.top()))) //ä¸æ»¡è¶³æ’åºè¦æ±‚ æˆ–è€… æ»¡è¶³æ’åºè¦æ±‚ä½†äº‹åŠ¡å¤„ç†åè¿”å›false
     //            break;
 
     //        pos = stack_data.top().first;
