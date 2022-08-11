@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿#ifndef ALGORITHM_COMMON_TEMPLATE__
+#define ALGORITHM_COMMON_TEMPLATE__
+
 #include<fstream>
 #include<vector>
 #include<string>
@@ -11,8 +13,6 @@ namespace help_interface {
     void ReadTextFile(const string& str_path, string& str_data);
     void StringDataToArrayData(const string& str_data, vector<int>& nums);
 }
-
-
 
 namespace k_m_p_interface //kmp匹配算法
 {
@@ -83,3 +83,30 @@ namespace math_interface
         return a * b / (gcd(a, b));
     }
 }
+
+namespace data_struct_interface {
+
+    struct Node {
+        bool visited = false;
+        int node_id = -1;
+        vector<Node*> children_arr;
+    };
+
+    void static BFS(Node* current_node) {//通用广搜
+        stack<Node*> stack_node;
+        stack_node.push(current_node);
+        int layer = 0;
+        while (!stack_node.empty()) {
+            Node* n = stack_node.top();
+            n->visited = true;
+            stack_node.pop();
+            layer++;
+            for (auto v : n->children_arr) {
+                if (!v->visited)
+                    stack_node.push(v);
+            }
+        }
+    }
+}
+
+#endif // !ALGORITHM_COMMON_TEMPLATE__

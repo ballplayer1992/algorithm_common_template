@@ -1,4 +1,4 @@
-﻿#include "algorithm_common_template.h"
+﻿#include "algorithm_common_template.hpp"
 namespace help_interface {
     void ReadTextFile(const std::string& str_path, std::string& str_data)
     {

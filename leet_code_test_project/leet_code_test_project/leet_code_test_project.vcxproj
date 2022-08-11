@@ -144,7 +144,7 @@
     <ClCompile Include="leet_code_test_project.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\algorithm_code\algorithm_common_template.h" />
+    <ClInclude Include="..\..\algorithm_code\algorithm_common_template.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
