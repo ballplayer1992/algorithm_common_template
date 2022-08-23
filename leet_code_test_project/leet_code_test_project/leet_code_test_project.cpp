@@ -10,7 +10,7 @@
 using namespace std;
 
 //引用自己的算法库
-#include"../../algorithm_code/algorithm_common_template.h"
+#include"../../algorithm_code/algorithm_common_template.hpp"
 using namespace math_interface;
 
 class Solution {
@@ -21,14 +21,14 @@ public:
             temp.push_back(v);
         Difference<vector<int>> difference(temp);
         for (auto& v : shifts) {
-            difference.Increment(v[0],v[1],v[2] * 2 - 1);
+            difference.Increment(v[0], v[1], v[2] * 2 - 1);
         }
         vector<int> diff_result(temp.size());
         difference.Result(diff_result);
 
         for (int i = 0; i < s.size(); ++i) {
             //取值在 a - z 之间
-            
+
         }
 
         return s;
