@@ -12,8 +12,6 @@ namespace help_interface {
     void StringDataToArrayData(const string& str_data, vector<int>& nums);
 }
 
-
-
 namespace k_m_p_interface //kmp匹配算法
 {
     //https://blog.csdn.net/yutong5818/article/details/81319120
@@ -82,4 +80,36 @@ namespace math_interface
     {
         return a * b / (gcd(a, b));
     }
+
+    /// <summary>
+    /// 差分数组模版
+    /// </summary>
+    template<class stl_container>
+    class Difference {
+    private:
+        stl_container diff_;
+    public:
+        /// 初始化差分数组
+        Difference(const stl_container& in) {
+            assert(in.size() > 0);
+            diff_.resize(in.size());
+            diff_[0] = in[0];
+            for (int i = 1; i < in.size(); ++i)
+                diff_[i] = in[i] - in[i - 1];
+        }
+        //对区间 [i,j]增加 val(val可以是负数)
+        void Increment(int i, int j, int val) {
+            diff_[i] += val;
+            if (j + 1 < diff_.size())
+                diff_[j + 1] -= val;
+        }
+        //返回区间内值修改后的结果
+        void Result(stl_container& source_arr) {
+            //求前缀和
+            source_arr[0] = diff_[0];
+            for (int i = 1; i < diff_.size(); ++i) {
+                source_arr[i] = diff_[i] + source_arr[i - 1];
+            }
+        }
+    };
 }

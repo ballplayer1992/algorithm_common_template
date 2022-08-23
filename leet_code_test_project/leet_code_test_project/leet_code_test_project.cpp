@@ -11,71 +11,39 @@ using namespace std;
 
 //引用自己的算法库
 #include"../../algorithm_code/algorithm_common_template.h"
+using namespace math_interface;
 
 class Solution {
 public:
-    int longestCycle(vector<int>& edges) {
-        vector<int> node_in_array(edges.size(), 0);
-        vector<bool> visit_flag(edges.size(), false);
+    string shiftingLetters(string s, vector<vector<int>>& shifts) {
+        vector<int> temp;
+        for (auto v : s)
+            temp.push_back(v);
+        Difference<vector<int>> difference(temp);
+        for (auto& v : shifts) {
+            difference.Increment(v[0],v[1],v[2] * 2 - 1);
+        }
+        vector<int> diff_result(temp.size());
+        difference.Result(diff_result);
 
-        for (int i = 0; i < edges.size(); i++)
-            if (edges[i] != -1)
-                node_in_array[edges[i]]++; //记录入边数量
-
-        vector<int> no_in_edge_node;
-        for (int i = 0; i < node_in_array.size(); i++)
-            if (node_in_array[i] == 0)
-                no_in_edge_node.push_back(i);
-
-        //拆除所有没有入边的节点
-        int count = 0;
-        while (!no_in_edge_node.empty()) {
-            int index = no_in_edge_node.back();
-            no_in_edge_node.pop_back();
-            if (index != -1 && node_in_array[index] >= 0 && --node_in_array[index] <= 0) {
-                no_in_edge_node.push_back(edges[index]);
-                visit_flag[index] = true;
-                count++;
-            }
+        for (int i = 0; i < s.size(); ++i) {
+            //取值在 a - z 之间
+            
         }
 
-        if (count == edges.size())
-            return -1;
-
-        int ans = 0;
-
-        for (int i = 0; i < node_in_array.size(); i++) {
-            if (visit_flag[i])
-                continue;
-            vector<int> index_queue(1, i);
-            int layer = 0;
-            while (!index_queue.empty()) {
-                int index = index_queue[0];
-                index_queue.erase(index_queue.begin());
-                if (index == i && layer != 0)
-                    break;
-
-                layer++;
-                visit_flag[index] = true;
-                index_queue.push_back(edges[index]);
-            }
-            ans = max(ans, layer);
-        }
-        return ans;
+        return s;
     }
 };
 
 int main() {
 
-    string test_path = "data_example//example.txt";
-    string data;
-    help_interface::ReadTextFile(test_path, data);
-
-    vector<int> nums1;
-
-    help_interface::StringDataToArrayData(data, nums1);
-
-    Solution solution;
-    solution.longestCycle(nums1);
+    //string test_path = "data_example//example.txt";
+    //string data;
+    //help_interface::ReadTextFile(test_path, data);
+    //help_interface::StringDataToArrayData(data, nums1);
+    string str = "abc";
+    vector<vector<int>> in_arr = { {0,1,0},{1,2,1},{0,2,1} };
+    Solution s;
+    s.shiftingLetters(str, in_arr);
     return 0;
 }
