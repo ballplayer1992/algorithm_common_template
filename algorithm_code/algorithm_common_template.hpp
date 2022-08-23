@@ -113,3 +113,28 @@ namespace math_interface
         }
     };
 }
+
+namespace data_struct_interface {
+
+    struct Node {
+        bool visited = false;
+        int node_id = -1;
+        vector<Node*> children_arr;
+    };
+
+    void static BFS(Node* current_node) {//通用广搜
+        stack<Node*> stack_node;
+        stack_node.push(current_node);
+        int layer = 0;
+        while (!stack_node.empty()) {
+            Node* n = stack_node.top();
+            n->visited = true;
+            stack_node.pop();
+            layer++;
+            for (auto v : n->children_arr) {
+                if (!v->visited)
+                    stack_node.push(v);
+            }
+        }
+    }
+}
