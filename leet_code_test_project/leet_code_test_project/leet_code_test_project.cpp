@@ -13,68 +13,34 @@ using namespace std;
 #include"../../algorithm_code/algorithm_common_template.hpp"
 using namespace math_interface;
 
+const int mod = 1e9 + 7;
+
 class Solution {
 public:
-    int maximalRectangle(vector<vector<char>>& matrix) {
-        int rows = matrix.size();
-        int cols = matrix[0].size();
-        vector<vector<int>> mt(rows,vector<int>(cols,0));
-        for (int i = 0; i < rows; ++i)
-            for (int j = 0; j < cols; ++j)
-                if (matrix[i][j] == '1')
-                    mt[i][j] = 1;
-        for (int j = 0; j < cols; ++j)
-            for (int i = 1; i < rows; ++i)
-                if (mt[i][j])
-                    mt[i][j] += mt[i - 1][j];
-        int ans = 0;
-        for (int i = 0; i < rows; ++i) {
-            vector<int>& temp = mt[i];
-            stack<pair<int, int>>st;
-            for (int index = 0; index < temp.size(); ++index) {
-                int cnt_index = index;
-                while (!st.empty() && temp[index] <= temp[st.top().first]) {
-                    cnt_index = st.top().second;
-                    ans = max(ans, (index - cnt_index + 1) * temp[index]);
-                    ans = max(ans,(index - cnt_index)* temp[st.top().first]);
-                    st.pop();
+    int numRollsToTarget(int n, int m, int target) {
+        //分组背包  |||| 物品数--->总价值情况数--->决策数
+        vector<vector<int>> ans(n+1,vector<int>(target+1,0));
+        ans[0][0] = 1;
+        for(int i = 1; i <=n; ++i)
+            for(int j = 1;j<=target;++j)
+                for (int k = 1; k <= m; ++k) {
+                    if (j >= k) {
+                        ans[i][j] = (ans[i][j] + ans[i - 1][j - k])%mod;
+                    }
                 }
-                st.push({index,cnt_index});
-            }
-            if (st.size()) {
-                int index = st.top().first;
-                while (!st.empty()) {
-                    ans = max(ans, (index - st.top().second + 1) * temp[st.top().first]);
-                    st.pop();
-                }
-            }
-        }
-        return ans;
+        return ans[n][target];
     }
 };
 
 int main() {
 
-    //string test_path = "data_example//example.txt";
-    //string data;
-    //help_interface::ReadTextFile(test_path, data);
-    //help_interface::StringDataToArrayData(data, nums1);
-//    vector<vector<char>> in_arr = { 
-//{'1','1','1','1','1','1','1','1'},
-//{'1','1','1','1','1','1','1','0'},
-//{'1','1','1','1','1','1','1','0'},
-//{'1','1','1','1','1','0','0','0'},
-//{'0','1','1','1','1','0','0','0'} };
-
-    //vector<vector<char>> in_arr = { {'1', '0', '1', '0', '0'}, {'1', '0', '1', '1', '1'}, {'1', '1', '1', '1', '1'}, {'1', '0', '0', '1', '0'} };
-    vector<vector<char>> in_arr = { {'0','1','1','0','1'},
-{'1','1','0','1','0'},
-{'0','1','1','1','0'},
-{'1','1','1','1','0'},
-{'1','1','1','1','1'},
-{'0','0','0','0','0'} };
-
+    string test_path = "data_example//example.txt";
+    string data;
+    help_interface::ReadTextFile(test_path, data);
+    vector<int> tasks;
+    help_interface::StringDataToArrayData(data, tasks);
+    
     Solution s;
-    s.maximalRectangle(in_arr);
+    s.numRollsToTarget(30, 30,500);
     return 0;
 }

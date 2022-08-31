@@ -112,6 +112,22 @@ namespace math_interface
             }
         }
     };
+
+    //分组背包
+    //f[i][j] 表示考虑前i个物品组，凑成价值为j的方案数。
+    int numRollsToTarget(int n, int m, int target) { //求方案为target的最大组合数
+        const int mod = 1e9 + 7;
+        vector<vector<int>> f(n + 1, vector<int>(target + 1, 0));
+        f[0][0] = 1;
+        for (int i = 1; i <= n; ++i)// 枚举物品组（每个骰子）
+            for (int j = 1; j <= target; ++j)  // 枚举背包容量（所掷得的总点数）
+                for (int k = 1; k <= m; ++k) {// 枚举决策（当前骰子所掷得的点数）
+                    if (j >= k) {
+                        f[i][j] = (f[i][j] + f[i - 1][j - k]) % mod;
+                    }
+                }
+        return f[n][target];
+    }
 }
 
 namespace data_struct_interface {
