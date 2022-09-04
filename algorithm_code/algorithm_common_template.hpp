@@ -49,6 +49,35 @@ namespace monotonic_stack_interface //单调栈
 namespace math_interface
 {
     /// <summary>
+    /// 10进制转N进制
+    /// </summary>
+    /// <param name="uiSrc">10进制数</param>
+    /// <param name="iBase">n进制</param>
+    /// <param name="pOutStr">字符串结果返回</param>
+    /// <returns></returns>
+    int static Base10ToBaseN(unsigned int uiSrc, int iBase, char* pOutStr) {
+        unsigned char ABCchane[37] = { 'A','B','C','D','E','F','G','H','I','J','K',
+        'L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z' };
+        unsigned int divide_num = uiSrc, left_num = 0;
+        unsigned char pResult[100] = { 0 };
+        int i = 0, j = 0;
+        while (1) {
+            left_num = divide_num % iBase;
+            divide_num = divide_num / iBase;
+            if (left_num > 9)
+                pResult[i] = left_num - 10 + 'A';
+            else
+                pResult[i] = left_num + '0';
+            if (divide_num == 0)
+                break;
+            i++;
+        }
+        for (j = 0; j <= i; j++)
+            *(pOutStr + j) = pResult[i - j];
+        return 0;
+    }
+
+    /// <summary>
     /// 求 a 和 b 的最大公约数
     /// </summary>
     /// <typeparam name="T"></typeparam>
@@ -115,7 +144,7 @@ namespace math_interface
 
     //分组背包
     //f[i][j] 表示考虑前i个物品组，凑成价值为j的方案数。
-    int numRollsToTarget(int n, int m, int target) { //求方案为target的最大组合数
+    int static numRollsToTarget(int n, int m, int target) { //求方案为target的最大组合数
         const int mod = 1e9 + 7;
         vector<vector<int>> f(n + 1, vector<int>(target + 1, 0));
         f[0][0] = 1;
