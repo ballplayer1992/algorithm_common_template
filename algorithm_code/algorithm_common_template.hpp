@@ -4,6 +4,7 @@
 #include<string>
 #include<stack>
 #include<functional>
+#include<assert.h>
 using namespace std;
 
 namespace help_interface {
@@ -156,6 +157,42 @@ namespace math_interface
                     }
                 }
         return f[n][target];
+    }
+
+    /// <summary>
+    /// 组合算法
+    /// </summary>
+    /// <typeparam name="T">T可以调入 vector<int> string 等 需要支持下标[]操作及size()函数</typeparam>
+    /// <param name="data">数组</param>
+    /// <param name="start">默认从数组data索引0开始</param>
+    /// <param name="n">数组data容量</param>
+    /// <param name="m">从n个数中选取m个</param>
+    /// <param name="depth">递归深度，到 m-1停止,因为深度从0计数</param>
+    /// <param name="temp">填写方案的容器</param>
+    template <typename T>
+    void Combine_Inner(T& data,int start,int n,int m,
+        int depth,T temp, std::function<void(const T& result)> on_result) {
+        if (depth == m - 1) {
+            //最内层循环 将 temp加入result
+            for (int i = start; i < n - (m - depth - 1); ++i) {
+                temp[depth] = data[i];
+                on_result(temp);
+            }
+        }
+        else {
+            for (int i = start; i < n - (m - depth - 1); ++i) {
+                temp[depth] = data[i];//每层输出一个元素
+                Combine_Inner(data,i+1,n,m,depth+1,temp,on_result);
+            }
+        }
+    }
+    //再分装
+    template <typename T>
+    void Combine(T&data,int m, std::function<void(const T& result)> on_result) {
+        assert(m > 0);
+        int depth = 0;
+        T temp(m,0);
+        Combine_Inner<T>(data,0,data.size(),m,depth,temp,on_result);
     }
 }
 
