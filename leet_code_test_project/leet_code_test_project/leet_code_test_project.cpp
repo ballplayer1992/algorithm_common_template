@@ -3,10 +3,14 @@
 #include<unordered_map>
 #include<algorithm>
 #include<assert.h>
-#include<iostream>
 #include<vector>
 #include<stack>
 #include<set>
+#include <stdio.h>
+#include<bit>
+#include<bitset>
+#include<cstdint>
+#include<iostream>
 using namespace std;
 
 //引用自己的算法库
@@ -17,25 +21,21 @@ const int mod = 1e9 + 7;
 
 class Solution {
 public:
-    int maximumRows(vector<vector<int>>& mat, int cols) {
-        vector<int> col_array(mat[0].size(),0);
-        for (int i = 0; i < col_array.size(); ++i)
-            col_array[i] = i;
+    int countMaxOrSubsets(vector<int>& nums) {
+        int max_value = nums[0];
+        vector<int> index_arr(nums.size(),0);
+        for (int i = 1; i < nums.size(); ++i) {
+            index_arr[i] = i;
+            max_value |= nums[i];
+        }
         int ans = 0;
-        Combine<vector<int>>(col_array, cols, [&](const vector<int>& result) {
-            vector<vector<int>> temp = mat;
-            for (int i = 0; i < result.size(); ++i)
-                for (int row = 0; row < mat.size(); ++row)
-                    temp[row][result[i]] = 0;
-            int max_value = 0;
-            for (int i = 0; i < mat.size(); ++i) {
-                int cnt = 0;
-                for (int j = 0; j < mat[0].size(); ++j)
-                    cnt += temp[i][j];
-                if (cnt == 0)
-                    max_value++;
-            }
-            ans = max(ans, max_value);
+        for(int i = 1; i <= nums.size();++i)
+            Combine<vector<int>>(index_arr, i, [&](const vector<int>& temp) {
+            int value = nums[temp[0]];
+            for (int i = 1; i < temp.size(); ++i)
+                value |= nums[temp[i]];
+            if (value == max_value)
+                ++ans;
             });
         return ans;
     }
@@ -49,8 +49,8 @@ int main() {
     vector<int> tasks;
     help_interface::StringDataToArrayData(data, tasks);
     
-    vector<vector<int>> mat = { {0,0,0},{1,0,1},{0,1,1},{0,0,1} }; int cols = 2;
+    vector<int> mat = { 3,1 };
     Solution s;
-    s.maximumRows(mat, cols);
+    s.countMaxOrSubsets(mat);
     return 0;
 }

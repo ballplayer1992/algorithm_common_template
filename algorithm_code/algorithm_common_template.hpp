@@ -50,6 +50,21 @@ namespace monotonic_stack_interface //单调栈
 namespace math_interface
 {
     /// <summary>
+    /// 统计一个整形变量二进制下1的个数
+    /// </summary>
+    /// <param name="u"></param>
+    /// <returns></returns>
+    unsigned int static __builtin_popcount(unsigned int u)
+    {
+        unsigned int ret = 0;
+        while (u)
+        {
+            u = (u & (u - 1));    // 将 u 最右边的 1 清除
+            ret++;
+        }
+        return ret;
+    }
+    /// <summary>
     /// 10进制转N进制
     /// </summary>
     /// <param name="uiSrc">10进制数</param>
