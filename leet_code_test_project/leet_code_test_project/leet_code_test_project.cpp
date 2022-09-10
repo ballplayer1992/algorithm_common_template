@@ -11,6 +11,7 @@
 #include<bitset>
 #include<cstdint>
 #include<iostream>
+#include<functional>
 using namespace std;
 
 //引用自己的算法库
@@ -21,23 +22,11 @@ const int mod = 1e9 + 7;
 
 class Solution {
 public:
-    int countMaxOrSubsets(vector<int>& nums) {
-        int max_value = nums[0];
-        vector<int> index_arr(nums.size(),0);
-        for (int i = 1; i < nums.size(); ++i) {
-            index_arr[i] = i;
-            max_value |= nums[i];
-        }
-        int ans = 0;
-        for(int i = 1; i <= nums.size();++i)
-            Combine<vector<int>>(index_arr, i, [&](const vector<int>& temp) {
-            int value = nums[temp[0]];
-            for (int i = 1; i < temp.size(); ++i)
-                value |= nums[temp[i]];
-            if (value == max_value)
-                ++ans;
-            });
-        return ans;
+    int numberOfWays(int startPos, int endPos, int k) {
+        int d = abs(startPos - endPos);
+        if (d > k || d % 2 != k % 2)
+            return 0;
+        return Combine(k,(k+d)/2);
     }
 };
 
@@ -51,6 +40,6 @@ int main() {
     
     vector<int> mat = { 3,1 };
     Solution s;
-    s.countMaxOrSubsets(mat);
+    int ans = s.numberOfWays(989,1000,99);
     return 0;
 }

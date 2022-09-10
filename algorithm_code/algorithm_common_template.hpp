@@ -209,6 +209,19 @@ namespace math_interface
         T temp(m,0);
         Combine_Inner<T>(data,0,data.size(),m,depth,temp,on_result);
     }
+    
+    //从n中取m个数求组合方案总数，递推公式实现
+    //用数组存储在之前重复计算的数字，然后就不用重复计算。
+    const int mod = 1e9 + 7;
+    long long static Combine(long long n,long long m,vector<vector<long>>& result) {
+        if (m == 0 || m == n) return 1;
+        if (result[n][m] != 0) return result[n][m];
+        return result[n][m] = (Combine(n - 1, m, result) + Combine(n - 1, m - 1, result))%mod;
+    }
+    long long static Combine(long long n, long long m) {
+        vector<vector<long>> result(n+1, vector<long>(m+1,0));
+        return Combine(n,m,result);
+    }
 }
 
 namespace data_struct_interface {
