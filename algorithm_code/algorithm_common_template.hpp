@@ -50,21 +50,6 @@ namespace monotonic_stack_interface //单调栈
 namespace math_interface
 {
     /// <summary>
-    /// 统计一个整形变量二进制下1的个数
-    /// </summary>
-    /// <param name="u"></param>
-    /// <returns></returns>
-    unsigned int static __builtin_popcount(unsigned int u)
-    {
-        unsigned int ret = 0;
-        while (u)
-        {
-            u = (u & (u - 1));    // 将 u 最右边的 1 清除
-            ret++;
-        }
-        return ret;
-    }
-    /// <summary>
     /// 10进制转N进制
     /// </summary>
     /// <param name="uiSrc">10进制数</param>
@@ -158,6 +143,26 @@ namespace math_interface
         }
     };
 
+    /// <summary>
+/// 整数反转(支持负整数和正整数)
+/// </summary>
+/// <param name="n"></param>
+/// <returns></returns>
+    int static reverse(int n) {
+        bool is_fs = n < 0 ? true : false;
+        vector<int> nums;
+        while (n != 0) {
+            nums.push_back(n % 10);
+            n /= 10;
+        }
+        int ans = 0;
+        for (auto v : nums) {
+            ans *= 10;
+            ans += v;
+        }
+        return is_fs ? -ans : ans;
+    }
+
     //分组背包
     //f[i][j] 表示考虑前i个物品组，凑成价值为j的方案数。
     int static numRollsToTarget(int n, int m, int target) { //求方案为target的最大组合数
@@ -185,8 +190,8 @@ namespace math_interface
     /// <param name="depth">递归深度，到 m-1停止,因为深度从0计数</param>
     /// <param name="temp">填写方案的容器</param>
     template <typename T>
-    void Combine_Inner(T& data,int start,int n,int m,
-        int depth,T temp, std::function<void(const T& result)> on_result) {
+    void Combine_Inner(T& data, int start, int n, int m,
+        int depth, T temp, std::function<void(const T& result)> on_result) {
         if (depth == m - 1) {
             //最内层循环 将 temp加入result
             for (int i = start; i < n - (m - depth - 1); ++i) {
@@ -197,30 +202,69 @@ namespace math_interface
         else {
             for (int i = start; i < n - (m - depth - 1); ++i) {
                 temp[depth] = data[i];//每层输出一个元素
-                Combine_Inner(data,i+1,n,m,depth+1,temp,on_result);
+                Combine_Inner(data, i + 1, n, m, depth + 1, temp, on_result);
             }
         }
     }
     //再分装
     template <typename T>
-    void Combine(T&data,int m, std::function<void(const T& result)> on_result) {
+    void Combine(T& data, int m, std::function<void(const T& result)> on_result) {
         assert(m > 0);
         int depth = 0;
-        T temp(m,0);
-        Combine_Inner<T>(data,0,data.size(),m,depth,temp,on_result);
+        T temp(m, 0);
+        Combine_Inner<T>(data, 0, data.size(), m, depth, temp, on_result);
     }
-    
+
     //从n中取m个数求组合方案总数，递推公式实现
     //用数组存储在之前重复计算的数字，然后就不用重复计算。
     const int mod = 1e9 + 7;
-    long long static Combine(long long n,long long m,vector<vector<long>>& result) {
+    long long static Combine(long long n, long long m, vector<vector<long>>& result) {
         if (m == 0 || m == n) return 1;
         if (result[n][m] != 0) return result[n][m];
-        return result[n][m] = (Combine(n - 1, m, result) + Combine(n - 1, m - 1, result))%mod;
+        return result[n][m] = (Combine(n - 1, m, result) + Combine(n - 1, m - 1, result)) % mod;
     }
     long long static Combine(long long n, long long m) {
-        vector<vector<long>> result(n+1, vector<long>(m+1,0));
-        return Combine(n,m,result);
+        vector<vector<long>> result(n + 1, vector<long>(m + 1, 0));
+        return Combine(n, m, result);
+    }
+}
+
+namespace binary_interface {
+    //<summary>
+    //统计一个整形变量二进制下1的个数
+    //</summary>
+    //<param name="u"></param>
+    //<returns></returns>
+    unsigned int static __builtin_popcount(unsigned int u) {
+        unsigned int ret = 0;
+        while (u) {
+            u = (u & (u - 1));    // 将 u 最右边的 1 清除
+            ret++;
+        }
+        return ret;
+    }
+
+    //位或操作,一个uint型值有32个位，所以最多有32种可能情况
+    //位或模板
+    //1:求出所有子数组的按位或的结果，以及值等于该结果的子数组的个数
+    //求按位或结果等于任意给定数字的子数组的最短长度 / 最长长度
+    vector<int> static smallestSubarrays(vector<int>& nums) {
+        vector<int> ans(nums.size(), 0);
+        vector<pair<int, int>> ors; //存储最大的位或值 + 对应的最小索引,用于存储遍历过程中生成从不同情况值，最多32种
+        for (int i = nums.size() - 1; i >= 0; --i) {
+            ors.emplace_back(0, i);
+            ors[0].first |= nums[i];
+            int k = 0;
+            for (int j = 1; j < ors.size(); ++j) { //原地去重方法
+                ors[j].first |= nums[i];
+                if (ors[j].first == ors[k].first)
+                    ors[k].second = ors[j].second; //去除重复情况
+                else ors[++k] = ors[j];
+            }
+            ors.resize(static_cast<size_t>(k) + 1);//执行去重
+            ans[i] = ors[0].second - i + 1;
+        }
+        return ans;
     }
 }
 
