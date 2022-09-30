@@ -5,6 +5,13 @@
 #include<stack>
 #include<functional>
 #include<assert.h>
+#include<map>
+#include<unordered_map>
+#include<unordered_set>
+#include<algorithm>
+#include<assert.h>
+#include<iostream>
+#include<set>
 using namespace std;
 
 namespace help_interface {
@@ -226,6 +233,42 @@ namespace math_interface
     long long static Combine(long long n, long long m) {
         vector<vector<long>> result(n + 1, vector<long>(m + 1, 0));
         return Combine(n, m, result);
+    }
+
+    //二分查找
+    int static BinarySearch(const vector<int>& arr, int key) {
+        int low = 0, high = arr.size() - 1,mid = 0;
+        while (low <= high) {
+            mid = (low + high) / 2;
+            if (arr[mid] < key) low = mid +1;
+            else if (arr[mid] > key) high = mid - 1;
+            else return mid;
+        }
+        return -1;
+    }
+
+    //快速幂:递归
+    double static QuickMul(double x, long long n) {
+        if (n == 0) return 1.0;
+        long long y = QuickMul(x,n/2);
+        return n % 2 == 0 ? y * y : y * y * x;
+    }
+    double static PowQuickMul(double x, long long n) {
+        return n >= 0 ? QuickMul(x, n) : 1.0 / QuickMul(x,-n);
+    }
+    //快速幂: 迭代方法
+    double static QuickMul_d(double x, long long n) {
+        double ans = 1.0;
+        double x_contribute = x;
+        while (n > 0) {
+            if (n % 2 == 1) ans *= x_contribute;
+            x_contribute *= x_contribute;
+            n /= 2;
+        }
+        return ans;
+    }
+    double static PowQuickMul_d(double x, long long n) {
+        return n >= 0 ? QuickMul_d(x, n) : 1.0 / QuickMul_d(x, -n);
     }
 }
 

@@ -77,3 +77,7 @@ leet_code_test_project/.vs/leet_code_test_project/FileContentIndex/4dca1846-dda7
 leet_code_test_project/.vs/leet_code_test_project/v16/Browse.VC.opendb
 leet_code_test_project/.vs/leet_code_test_project/v16/Browse.VC.db-wal
 leet_code_test_project/.vs/leet_code_test_project/v16/Browse.VC.db-shm
+*.pdb
+*.idb
+*.suo
+*.json
