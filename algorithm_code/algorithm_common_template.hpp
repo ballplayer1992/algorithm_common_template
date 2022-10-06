@@ -321,7 +321,8 @@ namespace binary_interface {
     class BIT {
     private:
         vector<int> tree;
-        BIT(int n):tree(n){}
+    public:
+        BIT(int n) :tree(n) {}
         void Update(int i, int val) { //单点更新
             while (i < tree.size()) {
                 tree[i] += val;
